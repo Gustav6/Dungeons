@@ -44,9 +44,6 @@ TagManager:
   - name: Walls
     uniqueID: 1188335895
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Gates
     uniqueID: 4157602145
     locked: 0
@@ -55,4 +52,7 @@ TagManager:
     locked: 0
   - name: Props 2
     uniqueID: 2922872045
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0

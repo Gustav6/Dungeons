@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,18 +9,23 @@ public class PlayerMovement : MonoBehaviour
 {
     private CustomInput input = null;
 
-    private Vector2 moveVector = Vector2.zero;
-    public float moveSpeed = 10;
-    private float velocity;
+    [SerializeField] private Vector2 moveVector = Vector2.zero;
+    [SerializeField] private float moveSpeed = 10;
+    private bool isRunning;
 
+    private SpriteRenderer spriteRenderer;
     private Controller2D controller;
     private Animator animator;
 
     private void Awake()
     {
         input = new CustomInput();
+
+        #region GetComponent
+        spriteRenderer = GetComponent<SpriteRenderer>();
         controller = GetComponent<Controller2D>();
         animator = GetComponent<Animator>();
+        #endregion
     }
 
     private void OnEnable()
@@ -36,10 +42,30 @@ public class PlayerMovement : MonoBehaviour
         input.Player.Move.canceled -= OnMovementCancelled;
     }
 
+    private void Update()
+    {
+        #region Flip Sprite
+        bool flipSprite = (spriteRenderer.flipX ? (moveVector.x > 0.01f) : (moveVector.x < -0.01f));
+        if (flipSprite)
+        {
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+        }
+        #endregion
+
+        if (moveVector.x > 0.01f || moveVector.x < -0.01f || moveVector.y > 0.01f || moveVector.y < -0.01f)
+        {
+            isRunning = true;
+        }
+        else
+        {
+            isRunning = false;
+        }
+
+        animator.SetBool("IsRunning", isRunning);
+    }
+
     private void FixedUpdate()
     {
-        animator.SetFloat("Velocity", MathF.Abs(moveVector.x));
-
         controller.Move(moveVector * moveSpeed * Time.fixedDeltaTime);
     }
 
