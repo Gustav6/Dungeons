@@ -41,7 +41,6 @@ public class RaycastController : MonoBehaviour
     public virtual void Awake()
     {
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player");
         collider = GetComponent<BoxCollider2D>();
     }
 
